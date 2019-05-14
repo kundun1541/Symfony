@@ -14,7 +14,7 @@ class BlogController extends AbstractController
      */
     public function index()
     {
-        return $this->render('blog/index.html.twig', ['owner' => 'Dimitri',]);
+        return $this->render('blog/index.html.twig', ['owner' => 'Sylvain',]);
     }
     /**
      * @Route("/list/{page}", requirements={"page"="\d+"}, name="blog_list")
