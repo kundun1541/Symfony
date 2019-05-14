@@ -19,11 +19,5 @@ class DefaultController extends AbstractController
             'owner' => 'Sylvain'
         ]);
     }
-    /**
-     * @Route("/blog/{id}", name="app_blog")
-     */
-     public function show($id)
-     {
-         return $this->render ('blog/show.html.twig', ['id'=>$id]);
-     }
+
 }
