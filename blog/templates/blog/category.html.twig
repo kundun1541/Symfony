@@ -1,12 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}All articles of this category{% endblock %}
-
 {% block body %}
     <h1>All articles from article s table : </h1>
     {% for article in articles %}
         <div>
-            <h2>{{ article.id }} / {{ article.title }} - Category : {{ article.categorie.name }}</h2>
+            <h2>{{ article.id }} / {{ categoryName.name }} - Category : {{ article.title }}</h2>
             <p>{{ article.content }}</p>
         </div>
     {% else %}

@@ -1,15 +1,13 @@
 <?php
 // src/Controller/BlogController.php
 namespace App\Controller;
-use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
 use App\Entity\Category;
-/**
- * @Route("/blog")
- */
+
+
 class BlogController extends AbstractController
 {
 
@@ -87,30 +85,24 @@ class BlogController extends AbstractController
         );
 
     }
+
+
     /**
-     * Show all row from article's entity
-     *
-     * @Route("category/{categorieName}",
-     * defaults={"categorieName" = "javascript"},
-     * name="show_category")
-     * @return Response A response instance
+     * @Route("/blog/category/{categoryName<^[a-z0-9-]+$>}", name="show_category")
      */
-    public function showByCategory(string $categorieName)
+    public function showByCategory(string $categoryName)
     {
-        $categorie = $this->getDoctrine()
-            ->getRepository(Categorie::class)
-            ->findOneBy(['name' => $categorieName]);
-        $articles = $this->getDoctrine()
+        $category = $this->getDoctrine()
+            ->getRepository(Category::class)
+            ->findOneBy(['name'=> $categoryName]);
+        $article = $this->getDoctrine()
             ->getRepository(Article::class)
-            ->findBy(['categorie' => $categorie], ['id' => 'DESC'], 3);
-        if (!$articles) {
-            throw $this->createNotFoundException(
-                'No article found in article\'s table.'
-            );
-        }
+            ->findBy(['category' => $category],[ "id" =>"desc"], 3);
         return $this->render(
             'blog/category.html.twig',
-            ['articles' => $articles]
-        );
+            [
+                'articles'     => $article,
+                'categoryName' => $category,
+            ]);
     }
 }
