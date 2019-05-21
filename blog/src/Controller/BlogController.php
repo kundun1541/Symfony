@@ -3,9 +3,12 @@
 namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Form\ArticleSearchType;
+use App\Form\CategoryType2;
 
 
 class BlogController extends AbstractController
@@ -17,11 +20,22 @@ class BlogController extends AbstractController
      * @Route("/", name="blog_index")
      * @return Response A response instance
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
             ->findAll();
+
+        $category = new Category();
+        $form = $this->createForm(
+            CategoryType2::class, $category);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted())
+        {
+            $data = $form->getData();
+        }
 
         if (!$articles) {
             throw $this->createNotFoundException(
@@ -31,7 +45,7 @@ class BlogController extends AbstractController
 
         return $this->render(
             'blog/index.html.twig',
-            ['articles' => $articles]
+            ['articles' => $articles, 'form' => $form->createView()]
         );
     }
 
@@ -104,4 +118,5 @@ class BlogController extends AbstractController
                 'categoryName' => $categoryName,
             ]);
     }
+
 }
