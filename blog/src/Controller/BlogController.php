@@ -1,6 +1,7 @@
 <?php
 // src/Controller/BlogController.php
 namespace App\Controller;
+use App\Entity\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +10,6 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\ArticleSearchType;
 use App\Form\CategoryType2;
-
 
 class BlogController extends AbstractController
 {
@@ -32,8 +32,7 @@ class BlogController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted())
-        {
+        if ($form->isSubmitted()) {
             $data = $form->getData();
         }
 
@@ -114,9 +113,22 @@ class BlogController extends AbstractController
         return $this->render(
             'blog/category.html.twig',
             [
-                'articles'     => $articles,
+                'articles' => $articles,
                 'categoryName' => $categoryName,
             ]);
     }
 
+    /**
+     * @Route("blog/tag/{name}", name="show_name")
+     *
+     *
+     */
+    public function Showtag(Tag $tag): Response
+    {
+
+        return $this->render('blog/tag.html.twig', ['tag' => $tag]);
+    }
 }
+
+
+
